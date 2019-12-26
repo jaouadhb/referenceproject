@@ -1,0 +1,23 @@
+management:
+  security:
+    enabled: true
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/referenceproject
+    username: postgres
+    password: postgres
+  resources:
+    chain:
+      enabled: true
+jwt:
+  signing-key-secret: hTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRl
+  get-token-uri: /authenticate
+  refresh-token-uri: /refresh
+  http-request-header: Authorization
+  token-expiration-in-seconds: 604800
+
+security:
+  basic:
+    enabled: false
+
