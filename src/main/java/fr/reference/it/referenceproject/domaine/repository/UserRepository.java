@@ -2,6 +2,7 @@ package fr.reference.it.referenceproject.domaine.repository;
 
 
 
+import fr.reference.it.referenceproject.domaine.dto.Person;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface UserRepository /*extends JpaRepository<Utilisateur,Integer>*/ {
 
     void saveUser(Utilisateur pUtilisateur);
 
+    Optional<Utilisateur> findByUsername(String username);
 }

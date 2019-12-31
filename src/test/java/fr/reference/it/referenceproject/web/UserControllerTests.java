@@ -6,16 +6,22 @@ import fr.reference.it.referenceproject.dataacces.PersoneRepository;
 import fr.reference.it.referenceproject.domaine.dto.Person;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
 import fr.reference.it.referenceproject.domaine.service.UserService;
+import fr.reference.it.referenceproject.security.jwt.config.JwtTokenAuthorizationOncePerRequestFilter;
+import fr.reference.it.referenceproject.security.jwt.config.JwtTokenUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,21 +34,24 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = UserController.class)
-class ApplicationAngularBackTests {
+@WebMvcTest
+@ContextConfiguration(classes = {UserController.class,JwtTokenUtil.class})
+@WithMockUser
+class UserControllerTests {
     @Autowired
     MockMvc mockMvc;
     @MockBean
     UserService userService;
     @MockBean
     PersoneRepository personeRepository;
- /*   @Autowired
-    JwtTokenUtil jwtTokenUtil;*/
-    @MockBean
-    JpaUserDAO jpaUserDAO;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
     String token;
 
     @Test
@@ -51,7 +60,7 @@ class ApplicationAngularBackTests {
 
     @BeforeEach
     public void setUpFields() {
-       // token = "Bearer " + jwtTokenUtil.generateToken(new User("jaouad", "jaouad", Collections.EMPTY_LIST));
+        token = "Bearer " + jwtTokenUtil.generateToken(new User("jaouad", "jaouad", Collections.EMPTY_LIST));
     }
 
 
@@ -68,7 +77,7 @@ class ApplicationAngularBackTests {
 
         MockHttpServletResponse response = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get("api/users/1")
+                        .get("api/users")
                         .header("Authorization", token))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn()

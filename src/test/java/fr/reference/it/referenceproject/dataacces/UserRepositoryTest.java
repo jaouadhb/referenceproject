@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class PersoneRepositoryImplTest {
+class UserRepositoryTest {
 
     @Autowired
     UserRepositoryImpl utilisateurRepository;

@@ -1,10 +1,12 @@
 package fr.reference.it.referenceproject.dataacces;
 
+import fr.reference.it.referenceproject.domaine.dto.Person;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
 import fr.reference.it.referenceproject.domaine.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +41,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void saveUser(Utilisateur pUtilisateur) {
         jpaUserDAO.save(userMapper.map(pUtilisateur));
+    }
+
+    @Override
+    public Optional<Utilisateur> findByUsername(String username) {
+        List<UserEntity> user = jpaUserDAO.findByUsername(username);
+        return user.stream().map(userMapper::map).findFirst();
     }
 
     public JpaUserDAO getJpaUserDAO() {
