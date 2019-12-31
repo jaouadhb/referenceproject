@@ -26,7 +26,8 @@ public class UserMapperImpl implements UserMapper {
         utilisateur.setNom(userEntity.getNom());
         utilisateur.setPrenom(userEntity.getPrenom());
         utilisateur.setDateNaissance(userEntity.getDateNaissance());
-
+        utilisateur.setUsername(userEntity.getUsername());
+        utilisateur.setPassword(userEntity.getPassword());
         return utilisateur;
     }
 
@@ -43,6 +44,9 @@ public class UserMapperImpl implements UserMapper {
         userEntity.setNom(utilisateur.getNom());
         userEntity.setPrenom(utilisateur.getPrenom());
         userEntity.setDateNaissance(utilisateur.getDateNaissance());
+        userEntity.setPassword(utilisateur.getPassword());
+        userEntity.setUsername(utilisateur.getUsername());
+        userEntity.setRole(utilisateur.getRole());
         return userEntity;
     }
 }

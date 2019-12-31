@@ -34,7 +34,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${jwt.get-token-uri}")
     private String authenticationPath;
-
+    @Value("${jwt.sign-in}")
+    private String signInPath;
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoderBean());
@@ -76,6 +77,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers(HttpMethod.POST, authenticationPath)
                 .antMatchers(HttpMethod.OPTIONS, "/**")
+                .and().ignoring()
+                .antMatchers(HttpMethod.POST, signInPath)
                 .and().ignoring()
                 .antMatchers(HttpMethod.GET,
                         "/") // Other Stuff You want to Ignore

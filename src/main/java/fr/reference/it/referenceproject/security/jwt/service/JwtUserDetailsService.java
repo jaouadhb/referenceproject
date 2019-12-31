@@ -2,7 +2,8 @@ package fr.reference.it.referenceproject.security.jwt.service;
 
 
 import fr.reference.it.referenceproject.domaine.dto.Person;
-import fr.reference.it.referenceproject.security.repository.UserRepository;
+import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
+import fr.reference.it.referenceproject.domaine.repository.UserRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,9 +23,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Person person = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username)));
-        return new User(person.getUsername(), person.getPassword(), new ArrayList<>());
+
+        Utilisateur utilisateur = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username)));
+        return new User(utilisateur.getUsername(), utilisateur.getPassword(), new ArrayList<>());
     }
 
 }

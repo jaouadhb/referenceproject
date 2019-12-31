@@ -18,15 +18,36 @@ public class Utilisateur {
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateNaissance;
-
+    private String username;
+    private String password;
+    private String role;
     public Utilisateur() {
     }
 
-    public Utilisateur( String email, String nom, String prenom, Date dateNaissance) {
+    public Utilisateur(String email, String nom, String prenom, Date dateNaissance) {
         this.email = email;
         this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
+        this.username = username;
+    }
+    public Utilisateur(String email, String nom, String prenom, Date dateNaissance, String userName,String password) {
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.username = userName;
+        this.password = password;
+    }
+
+    public Utilisateur(String email, String nom, String prenom, Date dateNaissance, String userName, String password, String role) {
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.username = userName;
+        this.password = password;
+        this.role = role;
     }
 
     public Integer getId() {
@@ -67,5 +88,29 @@ public class Utilisateur {
 
     public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String userName) {
+        this.username = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

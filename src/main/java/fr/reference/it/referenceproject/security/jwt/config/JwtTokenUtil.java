@@ -27,7 +27,7 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.token-expiration-in-seconds}")
     private Long expiration;
 
-    String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 

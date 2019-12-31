@@ -1,6 +1,9 @@
 package fr.reference.it.referenceproject.controller;
 
 
+import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
+import fr.reference.it.referenceproject.domaine.repository.UserRepository;
+import fr.reference.it.referenceproject.domaine.service.UserService;
 import fr.reference.it.referenceproject.security.jwt.config.JwtTokenUtil;
 import fr.reference.it.referenceproject.security.jwt.exception.AuthenticationException;
 import fr.reference.it.referenceproject.security.jwt.model.JwtTokenRequest;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
@@ -34,9 +38,11 @@ public class AuthenticationController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
+    @Autowired
+    UserService userService;
     @Autowired
     private UserDetailsService jwtUserDetailsService;
+    private String username;
 
     @PostMapping(value = "${jwt.get-token-uri}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
@@ -45,10 +51,25 @@ public class AuthenticationController {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
         final String token = jwtTokenUtil.generateToken(userDetails);
+        JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(token);
+        mapper(jwtTokenResponse,userService.findUserByUserName(authenticationRequest.getUsername()));
+        return ResponseEntity.ok(jwtTokenResponse);
+    }
+    @PostMapping(value = "${jwt.sign-in}")
+    public ResponseEntity<?> signIn(@RequestBody Utilisateur user) {
 
-        return ResponseEntity.ok(new JwtTokenResponse(token));
+        userService.addUser(user);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    private void mapper(JwtTokenResponse jwtTokenResponse, Optional<Utilisateur> userByUserName) {
+        Utilisateur utilisateur = userByUserName.get();
+        jwtTokenResponse.setEmail(utilisateur.getEmail());
+        jwtTokenResponse.setDateNaissance(utilisateur.getDateNaissance());
+        jwtTokenResponse.setUsername(utilisateur.getUsername());
+        jwtTokenResponse.setFirstName(utilisateur.getPrenom());
+        jwtTokenResponse.setLastName(utilisateur.getNom());
     }
 
     @PostMapping(value = "${jwt.refresh-token-uri}")
@@ -58,7 +79,7 @@ public class AuthenticationController {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token)) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtTokenResponse(refreshedToken));
+            return ResponseEntity.ok(new JwtTokenResponse(token));
         } else {
             return ResponseEntity.badRequest().body(null);
         }
