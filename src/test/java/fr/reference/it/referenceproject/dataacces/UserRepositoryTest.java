@@ -1,5 +1,7 @@
 package fr.reference.it.referenceproject.dataacces;
 
+import fr.reference.it.referenceproject.dataacces.entity.UserEntity;
+import fr.reference.it.referenceproject.domaine.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepositoryImpl utilisateurRepository;
+    UserRepository utilisateurRepository;
     @Mock
-    JpaUserDAO jpaUserDAO;
+    JpaUser jpaUserDAO;
 
     @BeforeEach
     void setUp() {

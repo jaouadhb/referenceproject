@@ -2,7 +2,6 @@ package fr.reference.it.referenceproject.controller;
 
 
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
-import fr.reference.it.referenceproject.domaine.repository.UserRepository;
 import fr.reference.it.referenceproject.domaine.service.UserService;
 import fr.reference.it.referenceproject.security.jwt.config.JwtTokenUtil;
 import fr.reference.it.referenceproject.security.jwt.exception.AuthenticationException;
@@ -59,6 +58,11 @@ public class AuthenticationController {
     @PostMapping(value = "${jwt.sign-in}")
     public ResponseEntity<?> signIn(@RequestBody Utilisateur user) {
 
+        Optional<Utilisateur> userInDataBase = userService.findUserByUserName(user.getUsername());
+        if(userInDataBase.isPresent())
+        {
+            return new ResponseEntity(HttpStatus.METHOD_NOT_ALLOWED);
+        }
         userService.addUser(user);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
@@ -70,6 +74,7 @@ public class AuthenticationController {
         jwtTokenResponse.setUsername(utilisateur.getUsername());
         jwtTokenResponse.setFirstName(utilisateur.getPrenom());
         jwtTokenResponse.setLastName(utilisateur.getNom());
+        jwtTokenResponse.setRole(utilisateur.getRole());
     }
 
     @PostMapping(value = "${jwt.refresh-token-uri}")

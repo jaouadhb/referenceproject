@@ -10,6 +10,9 @@ spring:
   resources:
     chain:
       enabled: true
+  h2:
+    console:
+      enabled: true
 jwt:
   signing-key-secret: hTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRlhTsMZA5PRl
   get-token-uri: /authenticate

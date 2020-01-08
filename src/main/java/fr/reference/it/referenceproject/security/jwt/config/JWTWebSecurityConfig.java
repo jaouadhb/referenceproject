@@ -64,6 +64,7 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest()
                 .authenticated();
 
@@ -78,12 +79,14 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity.ignoring().antMatchers(HttpMethod.POST, authenticationPath)
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 .and().ignoring()
+                .antMatchers(HttpMethod.OPTIONS,"/h2-console/**/**")
+                .and().ignoring()
                 .antMatchers(HttpMethod.POST, signInPath)
                 .and().ignoring()
                 .antMatchers(HttpMethod.GET,
                         "/") // Other Stuff You want to Ignore
                 .and().ignoring()
-                .antMatchers("/h2-console/**/**",
-                        "/v2/api-docs", "/configuration/**", "/webjars/**");// Should not be done in Production!
+                .antMatchers("/h2-console/**",
+                        "/v2/api-docs", "/configuration/**", "/profile/**").and().ignoring();// Should not be done in Production!
     }
 }

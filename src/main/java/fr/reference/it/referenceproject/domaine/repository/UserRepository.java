@@ -1,24 +1,63 @@
 package fr.reference.it.referenceproject.domaine.repository;
 
-
-
-import fr.reference.it.referenceproject.domaine.dto.Person;
+import fr.reference.it.referenceproject.dataacces.JpaUser;
+import fr.reference.it.referenceproject.dataacces.entity.UserEntity;
+import fr.reference.it.referenceproject.dataacces.mapper.Mapper;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-public interface UserRepository /*extends JpaRepository<Utilisateur,Integer>*/ {
+@Repository
+public class UserRepository{
+    @Autowired
+    private JpaUser jpaUser;
+    @Autowired
+    @Qualifier("userMapper")
+    private Mapper<UserEntity,Utilisateur> userMapper;
 
-    List<Utilisateur> findAll();
+    public List<Utilisateur> findAll() {
+        return jpaUser.findAll().stream().map(userMapper::map).collect(Collectors.toList());
+    }
 
-    Optional<Utilisateur> findUserById(int pId);
+    public Optional<Utilisateur> findUserById(int pId) {
+        return jpaUser.findById(pId).map(userMapper::map);
+    }
 
-    void deleteUser(int pId);
+    public void deleteUser(int pId) {
+        jpaUser.deleteById(pId);
+    }
 
-    void updateUser(Utilisateur pUtilisateur);
+    public void updateUser(Utilisateur pUtilisateur) {
+        jpaUser.save(userMapper.inverseMap(pUtilisateur));
+    }
 
-    void saveUser(Utilisateur pUtilisateur);
+    public void saveUser(Utilisateur pUtilisateur) {
+        jpaUser.save(userMapper.inverseMap(pUtilisateur));
+    }
 
-    Optional<Utilisateur> findByUsername(String username);
+    public Optional<Utilisateur> findByUsername(String username) {
+        List<UserEntity> user = jpaUser.findByUsername(username);
+        return user.stream().map(userMapper::map).findFirst();
+    }
+
+    public JpaUser getJpaUser() {
+        return jpaUser;
+    }
+
+    public void setJpaUser(JpaUser jpaUser) {
+        this.jpaUser = jpaUser;
+    }
+
+    public Mapper getUserMapper() {
+        return userMapper;
+    }
+
+    public void setUserMapper(Mapper userMapper) {
+        this.userMapper = userMapper;
+    }
 }

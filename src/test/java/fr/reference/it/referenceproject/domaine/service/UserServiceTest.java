@@ -1,4 +1,4 @@
-package fr.reference.it.referenceproject.domaine;
+package fr.reference.it.referenceproject.domaine.service;
 
 
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;

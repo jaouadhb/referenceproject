@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -31,7 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<Utilisateur> getUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUsers().stream().filter(user->!"admin".equals(user.getRole())).collect(Collectors.toList());
     }
 
     @PostMapping("/users/information")

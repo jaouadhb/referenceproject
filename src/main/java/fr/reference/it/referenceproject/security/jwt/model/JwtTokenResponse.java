@@ -15,18 +15,21 @@ public class JwtTokenResponse implements Serializable {
 	private  String firstName;
 	private  String email;
 	private  Date dateNaissance;
+	private String role;
+
 	public JwtTokenResponse(String token){
 		this.token = token;
 	}
-	public JwtTokenResponse(String token, String username, String lastName, String firstName, String email, Date dateNaissance) {
+
+	public JwtTokenResponse(String token, String username, String lastName, String firstName, String email, Date dateNaissance, String role) {
 		this.token = token;
 		this.username = username;
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.email = email;
 		this.dateNaissance = dateNaissance;
+		this.role = role;
 	}
-
 
 	public String getToken() {
 		return token;
@@ -74,5 +77,13 @@ public class JwtTokenResponse implements Serializable {
 
 	public void setDateNaissance(Date dateNaissance) {
 		this.dateNaissance = dateNaissance;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

@@ -1,5 +1,6 @@
-package fr.reference.it.referenceproject.dataacces;
+package fr.reference.it.referenceproject.dataacces.mapper;
 
+import fr.reference.it.referenceproject.dataacces.entity.UserEntity;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +11,8 @@ import javax.annotation.Generated;
         date = "2019-11-13T21:41:58+0100",
         comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_191 (Oracle Corporation)"
 )
-@Component
-public class UserMapperImpl implements UserMapper {
+@Component("userMapper")
+public class UserMapperImpl implements Mapper<UserEntity,Utilisateur> {
 
     @Override
     public Utilisateur map(UserEntity userEntity) {
@@ -28,11 +29,12 @@ public class UserMapperImpl implements UserMapper {
         utilisateur.setDateNaissance(userEntity.getDateNaissance());
         utilisateur.setUsername(userEntity.getUsername());
         utilisateur.setPassword(userEntity.getPassword());
+        utilisateur.setRole(userEntity.getRole());
         return utilisateur;
     }
 
     @Override
-    public UserEntity map(Utilisateur utilisateur) {
+    public UserEntity inverseMap(Utilisateur utilisateur) {
         if (utilisateur == null) {
             return null;
         }

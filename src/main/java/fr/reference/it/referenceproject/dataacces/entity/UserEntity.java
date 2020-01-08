@@ -1,4 +1,4 @@
-package fr.reference.it.referenceproject.dataacces;
+package fr.reference.it.referenceproject.dataacces.entity;
 
 
 import javax.persistence.*;
