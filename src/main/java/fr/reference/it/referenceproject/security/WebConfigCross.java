@@ -9,6 +9,7 @@ public class WebConfigCross implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        String[] strings = {"POST", "PUT", "GET", "OPTIONS", "DELETE"};
+        registry.addMapping("/**").allowedMethods(strings);
     }
 }

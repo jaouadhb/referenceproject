@@ -32,9 +32,9 @@ public class ArticleService {
         ArticleEntity articleEntity = articleMapper.inverseMap(pArticle);
         articleRepository.updateArticle(articleEntity);
     }
-    public void create_article(Article pArticle){
+    public int create_article(Article pArticle){
         ArticleEntity articleEntity = articleMapper.inverseMap(pArticle);
-        articleRepository.createArticle(articleEntity);
+        return articleRepository.createArticle(articleEntity);
     }
     public void delete_article(Integer pId){
         articleRepository.deleteById(pId);

@@ -15,8 +15,7 @@ public class ArticleRepository {
     @Autowired
     JpaArticle jpaArticle;
 
-    public List<ArticleEntity> findAll()
-    {
+    public List<ArticleEntity> findAll() {
         return jpaArticle.findAll();
     }
 
@@ -33,9 +32,9 @@ public class ArticleRepository {
     {
         jpaArticle.save(pArticleEntity);
     }
-    public void createArticle(ArticleEntity pArticleEntity)
+    public int createArticle(ArticleEntity pArticleEntity)
     {
-        jpaArticle.save(pArticleEntity);
+        return jpaArticle.save(pArticleEntity).getId();
     }
     public void setJpaArticle(JpaArticle jpaArticle) {
         this.jpaArticle = jpaArticle;

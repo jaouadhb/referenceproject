@@ -4,6 +4,7 @@ import fr.reference.it.referenceproject.dataacces.entity.ArticleEntity;
 import fr.reference.it.referenceproject.dataacces.entity.UserEntity;
 import fr.reference.it.referenceproject.domaine.dto.Article;
 import fr.reference.it.referenceproject.domaine.dto.Utilisateur;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
@@ -15,6 +16,10 @@ import javax.annotation.Generated;
 )
 @Component("articleMapper")
 public class ArticleMapperImpl implements Mapper<ArticleEntity,Article> {
+    @Value("${app.hosted.image.server.name}")
+    String serverName;
+    @Value("${app.hosted.image.server.port}")
+    String serverPort;
 
     @Override
     public Article map(ArticleEntity pArticleEntity) {
@@ -26,7 +31,7 @@ public class ArticleMapperImpl implements Mapper<ArticleEntity,Article> {
         article.setDescription(pArticleEntity.getDescription());
         article.setName(pArticleEntity.getName());
         article.setPrice(pArticleEntity.getPrice());
-        article.setImage(pArticleEntity.getImage());
+        article.setImage(serverName+serverPort+pArticleEntity.getImage());
         return article;
     }
 
@@ -40,6 +45,9 @@ public class ArticleMapperImpl implements Mapper<ArticleEntity,Article> {
         articleEntity.setName(pArticle.getName());
         articleEntity.setPrice(pArticle.getPrice());
         articleEntity.setImage(pArticle.getImage());
+        if(pArticle.getId()!=null){
+            articleEntity.setId(pArticle.getId());
+        }
         return articleEntity;
     }
 }

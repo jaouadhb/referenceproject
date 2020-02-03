@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PutMapping("users/user/editpassword")
-    public ResponseEntity<Object> editUserPassword(@RequestBody String passwordBody, @RequestHeader("Authorization") String token) throws JsonProcessingException {
+    public ResponseEntity<Object> editUserPassword(@RequestBody String passwordBody, @RequestHeader("Authorization") String token) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(passwordBody);
         String oldPassword = actualObj.get(OLD_PASSWORD).asText();

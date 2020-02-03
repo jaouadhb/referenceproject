@@ -7,6 +7,8 @@ import fr.reference.it.referenceproject.security.jwt.config.JwtTokenUtil;
 import fr.reference.it.referenceproject.security.jwt.exception.AuthenticationException;
 import fr.reference.it.referenceproject.security.jwt.model.JwtTokenRequest;
 import fr.reference.it.referenceproject.security.jwt.model.JwtTokenResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ import java.util.Optional;
 
 @RestController
 public class AuthenticationController {
+    private final Log LOGGER = LogFactory.getLog(AuthenticationController.class);
 
     @Value("${jwt.http-request-header}")
     private String tokenHeader;
@@ -46,7 +49,6 @@ public class AuthenticationController {
     @PostMapping(value = "${jwt.get-token-uri}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
             throws AuthenticationException {
-
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());

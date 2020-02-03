@@ -10,4 +10,5 @@ import java.lang.annotation.*;
 @Inherited
 @Sql(scripts = "classpath:scripts/preData.sql",executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public @interface SqlReference {
+
 }
